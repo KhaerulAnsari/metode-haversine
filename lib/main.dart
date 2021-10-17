@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:tampilkoordinat/destinasi.dart';
 import 'package:tampilkoordinat/haversine_base.dart';
 import 'package:tampilkoordinat/location_service.dart';
 
@@ -35,6 +36,11 @@ class _MainPageState extends State<MainPage> {
   double lat2;
   double long2;
   double hasil;
+
+  List<Destinasi> destinasi = [
+    Destinasi(1, 0, -6.9024812, 107.6166213, 'Gedung Sate'),
+    Destinasi(1, 0, -6.9218571, 107.6048254, 'Alun-Alun Bandung')
+  ];
 
   @override
   void initState() {
@@ -76,33 +82,43 @@ class _MainPageState extends State<MainPage> {
                 SizedBox(
                   height: 15,
                 ),
-                TextButton(
-                    child: Text('Simpan'),
-                    onPressed: () {
-                      setState(() {
-                        lati2 = lat1;
-                        return lati2;
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: destinasi.length,
+                    itemBuilder: (context, int) {
+                      destinasi.sort((a, b) {
+                        return a.jarak.compareTo(b);
                       });
-                      setState(() {
-                        longi2 = long1;
-                        return longi2;
-                      });
-                    }),
-                SizedBox(
-                  height: 30,
-                ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    primary: Colors.grey,
-                  ),
-                  child: Text('Hasil'),
-                  onPressed: () {
-                    setState(() {
-                      hasil = Haversine.haversine(lat1, long1, lati2, longi2);
-                    });
-                  },
-                ),
-                Column(children: <Widget>[Text('$hasil')])
+                      return Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  destinasi[int].name,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  destinasi[int].jarak = Haversine.haversine(
+                                          lat1,
+                                          long1,
+                                          destinasi[int].latitude,
+                                          destinasi[int].longitude)
+                                      .toString(),
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    })
               ],
             ),
           )

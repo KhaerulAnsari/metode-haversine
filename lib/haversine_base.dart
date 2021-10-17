@@ -1,7 +1,7 @@
 import 'dart:math';
 
 class Haversine {
-  static final R = 6372000; // In kilometers
+  static final R = 6372; // In kilometers
 
   static double haversine(double latitude1, longitude1, latitude2, longitude2) {
     double dlat = _toRadians(latitude2 - latitude1);
